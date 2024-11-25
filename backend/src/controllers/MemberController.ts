@@ -1,6 +1,22 @@
 import { Request, Response } from "express";
 import pool  from "../config/db";
 
+export const test = async (req: Request, res: Response) : Promise<any> => {
+    // console.log(pool);
+    try{
+        const result = await pool.query(
+            "SELECT * FROM MEMBER"
+        )
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Member not found" });
+          }
+          res.status(200).json(result.rows);
+        //   res.status(200).json({msg:"Hello"});
+    }
+    catch(error){
+        res.status(500).json({ error: error.message });
+    }
+}
 // Get Member Profile
 export const getMemberProfile = async (req: Request, res: Response) : Promise<any> => {
   const { memberId } = req.params;

@@ -1,11 +1,12 @@
 import express from "express";
-import { bookSession, getDietPlan, getMemberProfile, getMemberProfileByPhoneNumber, getWorkoutLogs, makePayment } from "../controllers/MemberController";
+import { bookSession, getDietPlan, getMemberProfile, getMemberProfileByPhoneNumber, getWorkoutLogs, makePayment, test } from "../controllers/MemberController";
 import { createDietPlan, createSession, createWorkoutLog, deleteWorkoutLog, editDietPlan, getAssignedMembers, getTrainerProfileByPhoneNumber, getTrainerSchedule, trackMemberProgress, updateWorkoutLog } from "../controllers/TrainerController";
 import { addMember, addTrainer, deleteMember, deleteTrainer, generateReport, getPaymentHistory, updateMember, updateTrainer } from "../controllers/AdminController";
 
 
 const router = express.Router();
 
+router.get("/" , test);
 // Member routes
 router.get("/members/:memberId/profile", getMemberProfile);
 router.post("/member" , getMemberProfileByPhoneNumber);

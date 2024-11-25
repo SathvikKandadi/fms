@@ -3,32 +3,38 @@ import axios from 'axios';
 import { CalendarDays, User, UserCircle, ClipboardList } from 'lucide-react';
 
 interface DietPlan {
-  planId: number;
-  memberId: number;
-  trainerId: number;
-  planDetails: string;
+    member_id: number;
+    plan_details: string;
+    plan_id:number;
+    trainer_id: number;
 }
 
 const DietPlan = () => {
-  const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
+  const [dietPlan, setDietPlan] = useState<DietPlan>();
 
   useEffect(() => {
     const fetchDietPlan = async () => {
       try {
-        const response = await axios.get('/api/diet-plan');
-        setDietPlan(response.data);
+        const response = await axios.get('http://localhost:3000/api/v1/members/1/diet-plan');
+        console.log(response.data[0]);
+        setDietPlan(response.data[0]);
       } catch (error) {
         console.error('Error fetching diet plan:', error);
         setDietPlan({
-          planId: 1,
-          memberId: 1,
-          trainerId: 1,
-          planDetails: 'Sample diet plan details go here.',
+            member_id: 1,
+            plan_details: 'Sample diet plan details go here.',
+            plan_id: 1,
+            trainer_id: 1
         });
       }
     };
     fetchDietPlan();
   }, []);
+
+  useEffect(() => {
+    console.log(dietPlan);
+    // setDietPlan(dietPlan);
+  }, [dietPlan]);
 
   if (!dietPlan) {
     return (
@@ -55,19 +61,19 @@ const DietPlan = () => {
             <div className="p-6 bg-gradient-to-br from-blue-500 to-indigo-600">
               <div className="flex items-center gap-3 text-white">
                 <CalendarDays className="h-6 w-6" />
-                <p className="text-lg font-medium">Plan #{dietPlan.planId}</p>
+                <p className="text-lg font-medium">Plan #{dietPlan.plan_id}</p>
               </div>
             </div>
             <div className="p-6 bg-gradient-to-br from-indigo-600 to-blue-600">
               <div className="flex items-center gap-3 text-white">
                 <User className="h-6 w-6" />
-                <p className="text-lg font-medium">Member #{dietPlan.memberId}</p>
+                <p className="text-lg font-medium">Member #{dietPlan.member_id}</p>
               </div>
             </div>
             <div className="p-6 bg-gradient-to-br from-blue-600 to-indigo-700">
               <div className="flex items-center gap-3 text-white">
                 <UserCircle className="h-6 w-6" />
-                <p className="text-lg font-medium">Trainer #{dietPlan.trainerId}</p>
+                <p className="text-lg font-medium">Trainer #{dietPlan.trainer_id}</p>
               </div>
             </div>
           </div>
@@ -77,7 +83,7 @@ const DietPlan = () => {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Plan Details</h2>
             <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {dietPlan.planDetails}
+                {dietPlan.plan_details}
               </p>
             </div>
           </div>

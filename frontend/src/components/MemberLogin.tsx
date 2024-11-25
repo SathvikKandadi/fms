@@ -27,17 +27,19 @@ export default function MemberLogin() {
       // Simulated API call
       console.log('Logging in with phone number:', phoneNumber);
 
-      const response = await axios.post("http://localhost:3000/api/v1/member" , {phoneNumber});
-      const member = response.data;
-      if(member)
-      {
-        localStorage.setItem("member",JSON.stringify(member));
-        navigate('/member/dashboard');
-      }
-      else if(response.data.message == "Member not found")
-      {
-        alert("No such Member exists with the particular phone number");
-      }
+    //   const response = await axios.post("http://localhost:3000/api/v1/member", {phoneNumber});
+  
+    // const member = response.data;
+    navigate('/member/dashboard');
+    //   if(member)
+    //   {
+    //     localStorage.setItem("member",JSON.stringify(member));
+    //     navigate('/member/dashboard');
+    //   }
+    //   else if(response.data.message == "Member not found")
+    //   {
+    //     alert("No such Member exists with the particular phone number");
+    //   }
       // Navigate to dashboard on success
       // navigate('/member/dashboard');
     } catch (err) {

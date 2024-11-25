@@ -3,12 +3,13 @@ import axios from 'axios';
 
 // Define a type for the log entries
 type LogEntry = {
-  Member_Id: number;
-  Date: string;
-  Exercise: string;
-  Sets: number;
-  Reps: number;
-  Weight: number;
+  date: string;
+  exercise: string;
+  log_id:number;
+  member_id: number;
+  reps: number;
+  sets: number;
+  weight: string;
 };
 
 const WorkoutLogs = () => {
@@ -23,8 +24,9 @@ const WorkoutLogs = () => {
   // Fetch workout logs from the backend API
   const fetchWorkoutLogs = async () => {
     try {
-    //   const response = await axios.get('/api/workout-logs'); // Adjust the endpoint as necessary
-        setLogs(dummyLogs);
+      const response = await axios.get('http://localhost:3000/api/v1/members/1/workout-logs'); // Adjust the endpoint as necessary
+      console.log(response.data);
+        setLogs(response.data);
     //   setLogs(response.data);
     } catch (error) {
       console.error("Error fetching workout logs:", error);
@@ -52,12 +54,12 @@ const WorkoutLogs = () => {
           <tbody>
             {logs.length > 0 ? (
               logs.map((log: LogEntry, index) => (
-                <tr key={log.Member_Id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
-                  <td className="py-4 px-6 text-sm text-gray-700">{log.Date}</td>
-                  <td className="py-4 px-6 text-sm text-gray-700">{log.Exercise}</td>
-                  <td className="py-4 px-6 text-sm text-gray-700">{log.Sets}</td>
-                  <td className="py-4 px-6 text-sm text-gray-700">{log.Reps}</td>
-                  <td className="py-4 px-6 text-sm text-gray-700">{log.Weight}</td>
+                <tr key={log.member_id} className={`hover:bg-gray-50 ${index % 2 === 0 ? 'bg-gray-100' : ''}`}>
+                  <td className="py-4 px-6 text-sm text-gray-700">{log.date}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{log.exercise}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{log.sets}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{log.reps}</td>
+                  <td className="py-4 px-6 text-sm text-gray-700">{log.weight}</td>
                 </tr>
               ))
             ) : (
