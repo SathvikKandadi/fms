@@ -25,8 +25,9 @@ export default function MemberLogin() {
     setIsLoading(true);
     try {
       // Simulated API call
-      const response = await axios.post("http://localhost:3000/api/v1/trainer" , {phoneNumber});
-      const trainer = response.data;
+      // const response = await axios.post("http://localhost:3000/api/v1/trainer" , {phoneNumber});
+      // const trainer = response.data;
+      navigate("/trainer/dashboard");
       // Navigate to dashboard on success
       // navigate('/member/dashboard');
     } catch (err) {

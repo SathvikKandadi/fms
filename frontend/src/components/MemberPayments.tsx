@@ -8,6 +8,10 @@ export default function MemberPayments() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const URL ="http://localhost:3000";
+  const axiosInstance = axios.create({
+    baseURL: 'http://localhost:3000', // Replace with your backend URL
+  });
 
   const handlePayment = async (paymentType: string) => {
     if (!amount || parseFloat(amount) <= 0) {
@@ -20,11 +24,9 @@ export default function MemberPayments() {
     setSuccess(false);
 
     try {
-      const response = await axios.post('/api/payments', {
-        Member_ID: memberId,
+      const response = await axiosInstance.post(`/api/v1/members/1/payments`, {
         Amount: parseFloat(amount),
         Payment_Type: paymentType,
-        Payment_Date: new Date().toISOString().split('T')[0],
       });
       setSuccess(true);
       setAmount('');

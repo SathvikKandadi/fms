@@ -52,10 +52,13 @@ const getMemberProfileByPhoneNumber = async (req, res) => {
 exports.getMemberProfileByPhoneNumber = getMemberProfileByPhoneNumber;
 // Book a Fitness Session
 const bookSession = async (req, res) => {
-    const { memberId } = req.params;
-    const { sessionId } = req.body;
+    const { trainerId, sessionId, date, time } = req.body;
+    // Convert date and time strings to the appropriate format if necessary
+    // const formattedDate = new Date(date).toISOString().split('T')[0]; // Format to YYYY-MM-DD
+    // const formattedTime = new Date(`1970-01-01T${time}`).toISOString().split('T')[1].slice(0, 8); // Format to HH:MM:SS
     try {
-        const result = await db_1.default.query("INSERT INTO Member_Sessions (Member_ID, Session_ID) VALUES ($1, $2) RETURNING *", [memberId, sessionId]);
+        const result = await db_1.default.query("INSERT INTO Session ( Date,  Time , Trainer_ID) VALUES ( CURRENT_DATE, CURRENT_TIME, $1) RETURNING *", [trainerId] // Use formatted date and time
+        );
         res.status(201).json({ message: "Session booked successfully", data: result.rows[0] });
     }
     catch (error) {
@@ -87,16 +90,46 @@ const getDietPlan = async (req, res) => {
     }
 };
 exports.getDietPlan = getDietPlan;
-// Make Payment
 const makePayment = async (req, res) => {
     const { memberId } = req.params;
     const { amount, paymentType } = req.body;
+    // Validate paymentType
+    const validPaymentTypes = ['Membership Fee', 'Session Booking'];
+    if (!validPaymentTypes.includes(paymentType)) {
+        return res.status(400).json({ error: "Invalid payment type" });
+    }
+    // Validate amount
+    if (!amount || isNaN(amount) || amount <= 0) {
+        return res.status(400).json({ error: "Invalid payment amount" });
+    }
     try {
+        // Insert payment record
         const result = await db_1.default.query("INSERT INTO Payment (Member_ID, Amount, Payment_Date, Payment_Type) VALUES ($1, $2, CURRENT_DATE, $3) RETURNING *", [memberId, amount, paymentType]);
-        res.status(201).json({ message: "Payment successful", data: result.rows[0] });
+        res.status(201).json({
+            message: "Payment successful",
+            data: result.rows[0],
+        });
     }
     catch (error) {
-        res.status(500).json({ error: error.message });
+        if (error.code === '23503') {
+            // Foreign key violation
+            return res.status(400).json({ error: "Member does not exist" });
+        }
+        res.status(500).json({ error: "An error occurred while processing the payment" });
     }
 };
 exports.makePayment = makePayment;
+// Make Payment
+// export const makePayment = async (req: Request, res: Response) => {
+//   const { memberId } = req.params;
+//   const { amount, paymentType } = req.body;
+//   try {
+//     const result = await pool.query(
+//       "INSERT INTO Payment (Member_ID, Amount, Payment_Date, Payment_Type) VALUES ($1, $2, CURRENT_DATE, $3) RETURNING *",
+//       [memberId, amount, paymentType]
+//     );
+//     res.status(201).json({ message: "Payment successful", data: result.rows[0] });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };

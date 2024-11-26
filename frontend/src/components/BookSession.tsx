@@ -24,13 +24,14 @@ const BookSession = () => {
     // Handle booking submission to your backend
     try {
       const memberId = 1; // Replace with actual member ID from your context or state
-      const sessionId = 1; // Replace with actual session ID based on your logic
-
-      const response = await axios.post(`/members/${memberId}/sessions`, {
-        sessionId: sessionId,
+      const trainerId = selectedTrainer; // Replace with actual session ID based on your logic
+      const response = await axios.post(`http://localhost:3000/api/v1/members/${memberId}/sessions`, {
+        trainerId: trainerId,
       });
 
       console.log(response.data); // Log the response from the server
+      if(response.data)
+        alert("Session booked Successfully");
     } catch (error) {
       console.error("Error booking session:", error);
     }

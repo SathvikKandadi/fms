@@ -40,6 +40,7 @@ export default function AdminLogin() {
       // Simulated API call
       await new Promise(resolve => setTimeout(resolve, 1500));
       console.log('Attempting admin login...');
+      navigate("/admin/dashboard");
       
       
       // Simulated failed attempt (remove in production)
