@@ -99,7 +99,7 @@ const BookSession = () => {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Select Time Slot
               </label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {timeSlots.map((time) => (
                   <div
                     key={time}
@@ -114,7 +114,7 @@ const BookSession = () => {
                     {time}
                   </div>
                 ))}
-              </div>
+              </div> */}
             </div>
 
             {/* Booking Summary */}
